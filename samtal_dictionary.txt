@@ -1,0 +1,1 @@
+{'sakal': {'Samtal': 'sakal', 'English': 'fire', 'Eng_2': ''}, 'selalik': {'Samtal': 'selalik', 'English': 'shadow', 'Eng_2': ''}}

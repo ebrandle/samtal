@@ -98,10 +98,20 @@ def export_csv():
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for row in cursor.execute('SELECT * FROM words'):
-            #print(row)
             writer.writerow({'samtal': row[0], 'english': row[1], 'eng_2': row[2]})
 
-    print('Words exported to samtal_dictionary.csv')
+    print('CSV export to "samtal_dictionary.csv" complete.')
+
+def export_dict():
+    fullDict = {}
+    f = open('samtal_dictionary.txt','w')
+    
+    for row in cursor.execute('SELECT * FROM words'):
+        fullDict[row[0]] = {'Samtal': row[0], 'English': row[1], 'Eng_2': row[2]}
+
+    f.write(str(fullDict))
+    print('Dictionary export to "samtal_dictionary.txt" complete.')
+    f.close()
 
 
 ######################
@@ -111,6 +121,7 @@ while True:
     print(menutext)
     selection = input('>>> ').lower()
 
+    # exit
     if selection == '0' or selection == 'q':
         break
 
@@ -130,22 +141,14 @@ while True:
     elif selection == 'lp':
         list_pos()
 
-    '''
-    elif selection == '3':
-        add_word_to_pos()
-        
-    elif selection == '4':
-        list_words_in_pos()
-
-    elif selection == 's':
-        search_word()
-
-    elif selection == 'd':
-        delete()
-    '''
-    
+    # export
     elif selection == 'x':
         export_csv()
+        export_dict()
+    elif selection == 'xc':
+        export_csv()
+    elif selection == 'xd':
+        export_dict()
 
     else:
         print('\nInvalid menu selection. Please try again.')
@@ -171,4 +174,21 @@ CREATE TABLE link_words_pos (
     FOREIGN KEY (samtal_link) REFERENCES words (samtal),
     FOREIGN KEY (pos_link) REFERENCES part_of_speech (pos)
 );
+'''
+
+###########
+''' TMP '''
+###########
+'''
+    elif selection == '3':
+        add_word_to_pos()
+        
+    elif selection == '4':
+        list_words_in_pos()
+
+    elif selection == 's':
+        search_word()
+
+    elif selection == 'd':
+        delete()
 '''
