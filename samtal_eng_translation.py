@@ -9,7 +9,7 @@
 + save english & samtal translations of words
 + list all words or all groups
 - search for translation of word in either direction
-- export database
++ export database
 - add words to various groups (noun, verb, weather, etc)
 - list all words in a group (tambal alphabetical order)
 - list all groups for a certain word
@@ -28,6 +28,7 @@ menutext = """
 0) Exit program
 A) Add word or part of speech
 L) List words or available parts of speech
+S) Search for word translation
 X) Export dictionary to samtal_dictionary.csv
 """
 
@@ -90,6 +91,27 @@ def list_pos():
 
 
 ##############
+''' SEARCH '''
+##############
+def look_up():
+    lang = input('Search by language: ')
+    word = input('Word to search: ')
+    value = (word,)
+
+    # english
+    if lang == 'e' or lang == 'eng' or lang == 'english':
+        for row in cursor.execute('SELECT samtal,english FROM words where english=?',value):
+            print('\nIn Samtal,',row[1],'is',row[0]+'.')
+
+    # samtal
+    elif lang == 's' or lang == 'sam' or lang == 'samtal':
+        for row in cursor.execute('SELECT samtal,english FROM words where samtal=?',value):
+            print(row[0],'means',row[1])
+    else:
+        print('\nInvalid language code.')
+
+
+##############
 ''' EXPORT '''
 ##############
 def export_csv():
@@ -105,13 +127,12 @@ def export_csv():
 def export_dict():
     fullDict = {}
     f = open('samtal_dictionary.txt','w')
-    
     for row in cursor.execute('SELECT * FROM words'):
         fullDict[row[0]] = {'Samtal': row[0], 'English': row[1], 'Eng_2': row[2]}
-
     f.write(str(fullDict))
-    print('Dictionary export to "samtal_dictionary.txt" complete.')
     f.close()
+    
+    print('Dictionary export to "samtal_dictionary.txt" complete.')
 
 
 ######################
@@ -141,6 +162,10 @@ while True:
     elif selection == 'lp':
         list_pos()
 
+    # find
+    elif selection == 's':
+        look_up()
+
     # export
     elif selection == 'x':
         export_csv()
@@ -149,7 +174,7 @@ while True:
         export_csv()
     elif selection == 'xd':
         export_dict()
-
+        
     else:
         print('\nInvalid menu selection. Please try again.')
 
