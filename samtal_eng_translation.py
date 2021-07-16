@@ -28,6 +28,7 @@ menutext = """
 0) Exit program
 A) Add word or part of speech
 L) List words or available parts of speech
+X) Export dictionary to samtal_dictionary.csv
 """
 
 connection = sqlite3.connect('samtal.db')
@@ -82,10 +83,25 @@ def list_words():
         print(tmpRow)
 
 def list_pos():
-    print("Current parts of speech")
+    print("\nCurrent parts of speech")
     for row in cursor.execute('SELECT * FROM part_of_speech'):
         tmpRow = row[0]
         print(tmpRow)
+
+
+##############
+''' EXPORT '''
+##############
+def export_csv():
+    with open('samtal_dictionary.csv', 'w', newline='') as csvfile:
+        fieldnames = ['samtal', 'english', 'eng_2']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in cursor.execute('SELECT * FROM words'):
+            #print(row)
+            writer.writerow({'samtal': row[0], 'english': row[1], 'eng_2': row[2]})
+
+    print('Words exported to samtal_dictionary.csv')
 
 
 ######################
@@ -93,7 +109,7 @@ def list_pos():
 ######################
 while True:
     print(menutext)
-    selection = input('>>> ')
+    selection = input('>>> ').lower()
 
     if selection == '0' or selection == 'q':
         break
@@ -114,6 +130,7 @@ while True:
     elif selection == 'lp':
         list_pos()
 
+    '''
     elif selection == '3':
         add_word_to_pos()
         
@@ -125,13 +142,18 @@ while True:
 
     elif selection == 'd':
         delete()
-
+    '''
+    
     elif selection == 'x':
         export_csv()
 
     else:
         print('\nInvalid menu selection. Please try again.')
 
+
+#######################
+''' DATABASE FORMAT '''
+#######################
 '''
 CREATE TABLE words (
     samtal text PRIMARY KEY,
