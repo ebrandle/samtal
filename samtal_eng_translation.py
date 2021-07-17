@@ -11,7 +11,7 @@
 + search for translation of word in either direction
 + export database
 + add words to various categories (noun, verb, weather, etc)
-- list all words in a category
++ list all words in a category
 - list all categories for a certain word
 - delete word/category
 - update word/category
@@ -29,8 +29,9 @@ menutext = """
 A) Add word or category
 C) Categorize word
 L) List words or available categories
+LBC) List words by selected category
 S) Search for word translation
-X) Export dictionary to samtal_dictionary.csv
+X) Export dictionary to samtal_dictionary.csv/.txt
 """
 
 connection = sqlite3.connect('samtal.db')
@@ -58,7 +59,7 @@ def add_word():
     connection.commit()
 
 def add_cat():
-    c = input('>>> category: ').lower()
+    c = input('>>> Category: ').lower()
     values = (c,)
     cursor.execute('INSERT INTO categories (cat) VALUES (?)', values)
     connection.commit()
@@ -139,7 +140,7 @@ def list_by_cat():
     if lstCat == 'y' or lstCat == 'yes':
         list_cat()
         print()
-    cat = input('\nCateogory to list words from: ').lower()
+    cat = input('Cateogory to list words from: ').lower()
 
     # category validation
     catLs = []
@@ -152,11 +153,11 @@ def list_by_cat():
     # find words in category
     print('\n<<',cat.upper(),'>>')
     catVal = (cat,)
-    for link_row in cursor.execute('SELECT * FROM link_words_cat WHERE cat_link=?',catVal):
-        print('link row:',link_row)
+    for link_row in cursor.execute('SELECT * FROM link_words_cat WHERE cat_link=?',catVal).fetchall():
+        #print('link row:',link_row)
         linkVal = (link_row[0],)
-        for row in cursor.execute('SELECT * FROM words WHERE samtal=?',linkVal):
-            print('row:',row)
+        for row in cursor.execute('SELECT * FROM words WHERE samtal=?',linkVal).fetchall():
+            #print('row:',row)
             tmpRow = row[0] + ': ' + row[1]
             if row[2] != '':
                 tmpRow = tmpRow + ', ' + row[2]
@@ -279,9 +280,5 @@ CREATE TABLE link_words_cat (
    cat_link text NOT NULL,
    FOREIGN KEY (samtal_link) REFERENCES words (samtal),
    FOREIGN KEY (cat_link) REFERENCES categories (cat)
-   );
+);
 '''
-
-###########
-''' TMP '''
-###########
