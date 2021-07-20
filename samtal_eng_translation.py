@@ -13,7 +13,7 @@
 + add words to various categories (noun, verb, weather, etc)
 + list all words in a category
 - list all categories for a certain word
-- delete word/category
++ delete word/category
 - update word/category
 - find rhymes
 '''
