@@ -31,6 +31,7 @@ C) Categorize word
 L) List words or available categories
 LBC) List words by selected category
 S) Search for word translation
+D) Delete word or category
 X) Export dictionary to samtal_dictionary.csv/.txt
 """
 
@@ -186,6 +187,33 @@ def look_up():
 
 
 ##############
+''' DELETE '''
+##############
+def delete():
+    addType = input('\nDo you want to delete a word or category? ').lower()
+    if addType == 'word' or addType == 'words' or addType == 'w':
+        delete_word()
+    elif addType == 'cat' or addType == 'category' or addType == 'c':
+        delete_cat()
+    else:
+        print('Invalid table name. Please try again.')
+
+def delete_word():
+    sam = input('>>> Samtal: ').lower()
+    val = (sam,)
+    cursor.execute('DELETE FROM words WHERE samtal=?', val).fetchall()
+    cursor.execute('DELETE FROM link_words_cat WHERE samtal_link=?', val).fetchall()
+    connection.commit()
+
+def delete_cat():
+    c = input('>>> Category: ').lower()
+    val = (c,)
+    cursor.execute('DELETE FROM categories WHERE cat=?', val).fetchall()
+    cursor.execute('DELETE FROM link_words_cat WHERE cat_link=?', val).fetchall()
+    connection.commit()
+
+
+##############
 ''' EXPORT '''
 ##############
 def export_csv():
@@ -245,6 +273,14 @@ while True:
     # find
     elif selection == 's':
         look_up()
+
+    # delete
+    elif selection == 'd':
+        delete()
+    elif selection == 'dw':
+        delete_word()
+    elif selection == 'dc':
+        delete_cat()
 
     # export
     elif selection == 'x':
