@@ -1,0 +1,3 @@
+- enter parts of speech in base form
+- translate individual words
+- put in correct order
