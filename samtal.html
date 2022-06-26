@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Colors
+	Teals: Teal, DarkSlateGreen, Aquamarine
+	SeaGreens: LightSeaGreen, SeaGreen, DarkSeaGreen
+	Whites: AntiqueWhite, CornSilk, WhiteSmoke, Linen
+	Browns: SaddleBrown
+	
+	Deep colors: #1f471f
+	-->
+	<title>Samtal Interactive Database</title>
+	<style>
+		* {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		
+		body {
+			background-color: AntiqueWhite;
+		}
+		
+		h1,h2 {
+			color: #1f471f;
+		}
+		
+		h1 {
+			font-family: "Lucida Handwriting", cursive;
+		}
+		
+		h2 {
+			font-family: serif;
+		}
+		
+		div {
+			margin-top: 8px;
+		}
+		
+		button {
+			background-color: cornsilk;
+			color: #1f471f;
+			padding: 0px 6px;
+			border: 1px solid #1f471f;
+			border-radius: 4px;
+		}
+		
+		button:hover {
+			background-color: teal;
+			color: whitesmoke;
+			border: 1px solid antiquewhite;
+		}
+	</style>
+</head>
+<body>
+	<h1>Samtal Interactive Database</h1>
+	<p>Insert stuff here.</p>
+	
+	<h2 style="margin-top: 16px;">Options</h2>
+	<div>
+		<div id="addStuff">
+			<h3>Add something!</h3>
+			<ul>
+				<li>Word</li>
+				<li>Part of speech or other category</li>
+			</ul>
+		</div>
+		<div id="categorizeStuff">
+			<h3>Categorize something!</h3>
+		</div>
+		<div id="listStuff">
+			<h3>List stuff!</h3>
+			<ul>
+				<li>All words</li>
+				<li>All categories</li>
+				<li>Words in selected category:</li> <!-- dropdown w/ categories here-->
+			</ul>
+		</div>
+		<div id="translateStuff">
+			<h3>Translate me!</h3> <!-- text box for word to translate -->
+		</div>
+		<div id="deleteStuff">
+			<h3>Oops! Delete this typo:</h3> <!-- text box for word/category to delete -->
+		</div>
+		<div id="exportOptions">
+			<h3>Export dictionary:</h3>
+			<ul>
+				<li>Export as <button type="button">.csv</button></li>
+				<li>Export as <button type="button">.txt</button></li>
+				<li>Who says I have to pick one? <button type="button">Export both!</button></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
