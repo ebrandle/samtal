@@ -49,14 +49,26 @@
 			color: whitesmoke;
 			border: 1px solid antiquewhite;
 		}
+		
+		#actionsDiv {
+			position: sticky;
+			top: 0;
+		}
+		
+		#resultsDiv {
+			max-width: 50%;
+			float: right;
+		}
 	</style>
 </head>
 <body>
+	<div id="resultsDiv">
+	</div>
 	<h1>Samtal Interactive Database</h1>
 	<p>Insert stuff here.</p>
 	
-	<h2 style="margin-top: 16px;">Options</h2>
-	<div>
+	<div id="actionsDiv">
+		<h2 style="margin-top: 16px;">Options</h2>
 		<div id="addStuff">
 			<h3>Add something!</h3>
 			<ul>
