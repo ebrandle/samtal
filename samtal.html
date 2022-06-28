@@ -36,7 +36,7 @@
 			margin-top: 8px;
 		}
 		
-		button {
+		button, select {
 			background-color: cornsilk;
 			color: #1f471f;
 			padding: 0px 6px;
@@ -60,6 +60,10 @@
 			float: right;
 		}
 	</style>
+	<script>
+		// Validate forms: https://www.w3schools.com/js/js_validation.asp
+		// innerHTML: https://www.w3schools.com/js/js_htmldom_document.asp
+	</script>
 </head>
 <body>
 	<div id="resultsDiv">
@@ -72,8 +76,8 @@
 		<div id="addStuff">
 			<h3>Add something!</h3>
 			<ul>
-				<li>Word</li>
-				<li>Part of speech or other category</li>
+				<li>Add a <button type="button">word</button></li>
+				<li>Add a <button type="button">part of speech or other category</button></li>
 			</ul>
 		</div>
 		<div id="categorizeStuff">
@@ -82,9 +86,16 @@
 		<div id="listStuff">
 			<h3>List stuff!</h3>
 			<ul>
-				<li>All words</li>
-				<li>All categories</li>
-				<li>Words in selected category:</li> <!-- dropdown w/ categories here-->
+				<li>All <button type="button" id="listWordsBtn">words</button></li>
+				<li>All <button type="button">categories</button></li>
+				<li>
+					<label for="categoryDropdown">Words in selected category:</label>
+					<select name="categoryDropdown" id="categoryDropdown">
+						<option value="cat-all">All categories</option>
+						<option value="cat-1">Category 1</option>
+						<option value="cat-2">Category 2</option>
+					</select>
+				</li>
 			</ul>
 		</div>
 		<div id="translateStuff">
@@ -102,5 +113,16 @@
 			</ul>
 		</div>
 	</div>
+	<script>
+		listWordsBtn.addEventListener("click", function() {
+				let ajax = new XMLHttpRequest();
+				ajax.responseType = "text";
+				ajax.addEventListener("load", function() {
+					resultsDiv.innerHTML=this.response;
+				});
+				ajax.open("GET","samtal_test.php?op=listAllWords");
+				ajax.send();
+			});
+	</script>
 </body>
 </html>
