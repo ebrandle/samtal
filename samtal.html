@@ -57,7 +57,19 @@
 		
 		#resultsDiv {
 			max-width: 50%;
+			min-width: 30%;
 			float: right;
+		}
+		
+		input {
+			background-color: AntiqueWhite;
+			color: #1f471f;
+			padding: 0px 6px;
+			min-width: 2px;
+			border-top: 1px solid AntiqueWhite;
+			border-right: 1px solid AntiqueWhite;
+			border-left: 1px solid AntiqueWhite;
+			border-bottom: 1.75px solid #1f471f;
 		}
 	</style>
 	<script>
@@ -66,8 +78,7 @@
 	</script>
 </head>
 <body>
-	<div id="resultsDiv">
-	</div>
+	<div id="resultsDiv"></div>
 	<h1>Samtal Interactive Database</h1>
 	<p>Insert stuff here.</p>
 	
@@ -87,19 +98,23 @@
 			<h3>List stuff!</h3>
 			<ul>
 				<li>All <button type="button" id="listWordsBtn">words</button></li>
-				<li>All <button type="button">categories</button></li>
+				<li>All <button type="button" id="listCatsBtn">categories</button></li>
 				<li>
-					<label for="categoryDropdown">Words in selected category:</label>
-					<select name="categoryDropdown" id="categoryDropdown">
-						<option value="cat-all">All categories</option>
-						<option value="cat-1">Category 1</option>
-						<option value="cat-2">Category 2</option>
-					</select>
+					<label for="wordsByCat">All words in category </label>
+					<input type="text" id="wordsByCat" name="wordsByCat">
+					<button type="button" id="listWordsByCatBtn">Search!</button>
 				</li>
 			</ul>
 		</div>
 		<div id="translateStuff">
 			<h3>Translate me!</h3> <!-- text box for word to translate -->
+			<ul>
+				<li>
+					<label for="translateWordFromSamtal">Translate from Samtal: </label>
+					<input type="text" id="translateWordFromSamtal" name="translateWordFromSamtal">
+					<button type="button" id="translateWordFromSamtalBtn">Search!</button>
+				</li>
+			</ul>
 		</div>
 		<div id="deleteStuff">
 			<h3>Oops! Delete this typo:</h3> <!-- text box for word/category to delete -->
@@ -114,15 +129,47 @@
 		</div>
 	</div>
 	<script>
+		/*var input = document.querySelector('input'); // get the input element
+		input.addEventListener('input', resizeInput); // bind the "resizeInput" callback on "input" event
+		resizeInput.call(input); // immediately call the function
+		
+		function resizeInput() {
+			this.style.width = this.value.length + "ch";
+		}*/
+		
+		/***** LIST STUFF *****/
+		// list words
 		listWordsBtn.addEventListener("click", function() {
-				let ajax = new XMLHttpRequest();
-				ajax.responseType = "text";
-				ajax.addEventListener("load", function() {
-					resultsDiv.innerHTML=this.response;
-				});
-				ajax.open("GET","samtal_test.php?op=listAllWords");
-				ajax.send();
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
 			});
+			ajax.open("GET","samtal.php?op=listAllWords");
+			ajax.send();
+		});
+		
+		// list categories
+		listCatsBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=listAllCats");
+			ajax.send();
+		});
+		
+		// list words by category
+		listWordsByCatBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=listWordsByCat&cat="+wordsByCat.value);
+			ajax.send();
+		});
 	</script>
 </body>
 </html>
