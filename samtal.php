@@ -57,8 +57,9 @@ EOF;*/
        * ~/.../samtal.php on line 52
        **/
       $ret = $db->query($sql);
+      echo "<div style='text-transform:uppercase;'>".$cat ."</div>\n";
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
-         echo $row['cat_link'] ."<br>\n";
+         echo $row['samtal_link'] ."<br>\n";
       }
    }
    
