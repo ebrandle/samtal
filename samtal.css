@@ -1,0 +1,70 @@
+/*
+Colors
+	Teals: Teal, DarkSlateGreen, Aquamarine
+	SeaGreens: LightSeaGreen, SeaGreen, DarkSeaGreen
+	Whites: AntiqueWhite, CornSilk, WhiteSmoke, Linen
+	Browns: SaddleBrown
+	
+	Deep green: #1f471f
+*/
+
+* {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+body {
+	background-color: AntiqueWhite;
+}
+
+h1,h2 {
+	color: #1f471f;
+}
+
+h1 {
+	font-family: "Lucida Handwriting", cursive;
+}
+
+h2 {
+	font-family: serif;
+}
+
+div {
+	margin-top: 8px;
+}
+
+button, select {
+	background-color: cornsilk;
+	color: #1f471f;
+	padding: 0px 6px;
+	border: 1px solid #1f471f;
+	border-radius: 4px;
+}
+
+button:hover {
+	background-color: teal;
+	color: whitesmoke;
+	border: 1px solid antiquewhite;
+}
+
+#actionsDiv {
+	position: sticky;
+	top: 0;
+}
+
+#resultsDiv {
+	max-width: 50%;
+	min-width: 30%;
+	float: right;
+}
+
+input {
+	background-color: AntiqueWhite;
+	color: #1f471f;
+	padding: 0px 6px;
+	min-width: 2px;
+	border-top: 1px solid AntiqueWhite;
+	border-right: 1px solid AntiqueWhite;
+	border-left: 1px solid AntiqueWhite;
+	border-bottom: 1.75px solid #1f471f;
+}

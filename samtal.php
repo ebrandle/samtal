@@ -47,8 +47,8 @@ EOF;*/
    
    function listWordsByCat($cat) {
       global $db;
-      //$sql = "SELECT * FROM link_words_cat WHERE cat_link='". $cat ."';";
-      $sql = "SELECT samtal_link FROM link_words_cat WHERE cat_link='". $cat ."';";
+      $sql = "SELECT * FROM link_words_cat WHERE cat_link='". $cat ."';";
+      //$sql = "SELECT samtal_link FROM link_words_cat WHERE cat_link='". $cat ."';";
       
       // error: thinks $cat is a column, not column entry
       /* Warning: SQLite3::query():
