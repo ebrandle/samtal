@@ -34,6 +34,8 @@
 		<p>SIDb is a PHP webserver with an SQLite database. Samtal is a fantasy conlang created by the author of the Shadow's Flame flashfiction series and this website.</p>
 		<div id="actionsDiv">
 			<h2 style="margin-top: 16px;">Options</h2>
+			
+			<!-- ADD OPTIONS -->
 			<div id="addStuff">
 				<h3>Add something!</h3>
 				<ul>
@@ -41,21 +43,28 @@
 					<li>Add a <button type="button">part of speech or other category</button></li>
 				</ul>
 			</div>
+			
+			<!-- CATEGORIZATION OPTIONS -->
 			<div id="categorizeStuff">
 				<h3>Categorize something!</h3>
 			</div>
+			
+			<!-- LIST OPTIONS -->
 			<div id="listStuff">
 				<h3>List stuff!</h3>
 				<ul>
 					<li>All <button type="button" id="listWordsBtn">words</button></li>
+					<li>All words sorted by category <button type="button" id="listAllWordsByCatBtn">Search!</button></li>
 					<li>All <button type="button" id="listCatsBtn">categories</button></li>
 					<li>
 						<label for="wordsByCat">All words in category </label>
 						<input type="text" id="wordsByCat" name="wordsByCat">
-						<button type="button" id="listWordsByCatBtn">Search!</button>
+						<button type="button" id="listWordsInCatBtn">Search!</button>
 					</li>
 				</ul>
 			</div>
+			
+			<!-- TRANSLATE OPTIONS -->
 			<div id="translateStuff">
 				<h3>Translate me!</h3> <!-- text box for word to translate -->
 				<ul>
@@ -66,9 +75,13 @@
 					</li>
 				</ul>
 			</div>
+			
+			<!-- DELETE OPTIONS -->
 			<div id="deleteStuff">
 				<h3>Oops! Delete this typo:</h3> <!-- text box for word/category to delete -->
 			</div>
+			
+			<!-- EXPORT OPTIONS -->
 			<div id="exportOptions">
 				<h3>Export dictionary:</h3>
 				<ul>
@@ -113,6 +126,17 @@
 			ajax.send();
 		});
 		
+		// list all words by category
+		listAllWordsByCatBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=listAllWordsByCat");
+			ajax.send();
+		});
+		
 		// list categories
 		listCatsBtn.addEventListener("click", function() {
 			let ajax = new XMLHttpRequest();
@@ -124,14 +148,14 @@
 			ajax.send();
 		});
 		
-		// list words by category
-		listWordsByCatBtn.addEventListener("click", function() {
+		// list words in category
+		listWordsInCatBtn.addEventListener("click", function() {
 			let ajax = new XMLHttpRequest();
 			ajax.responseType = "text";
 			ajax.addEventListener("load", function() {
 				resultsDiv.innerHTML=this.response;
 			});
-			ajax.open("GET","samtal.php?op=listWordsByCat&cat="+wordsByCat.value);
+			ajax.open("GET","samtal.php?op=listWordsInCat&cat="+wordsByCat.value);
 			ajax.send();
 		});
 	</script>

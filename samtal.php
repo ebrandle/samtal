@@ -24,12 +24,14 @@ EOF;*/
    function listAllWords() {
       global $db;
       $sql = "SELECT * from words;";
-
       $ret = $db->query($sql);
+      
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
          echo "<h3>". $row['samtal'] ."</h3>";
-         echo "English: ". $row['english'] ."<br>\n";
-         echo "English 2: ". $row['eng_def_2'] ."<br>\n";
+         echo "English: ". $row['english'];// ."<br>\n";
+         if ($row['eng_def_2'] != "") {
+            echo ", ". $row['eng_def_2'] ."<br>\n";
+         } else {echo "<br>";}
          echo "<br>";
       }
    }
@@ -37,29 +39,52 @@ EOF;*/
    function listAllCats() {
       global $db;
       $sql = "SELECT * from categories;";
-
       $ret = $db->query($sql);
-      echo "<h3>Categories". $row['cat'] ."</h3>";
+      
+      echo "<h3>categories". $row['cat'] ."</h3>";
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
          echo $row['cat'] ."<br>\n";
       }
    }
    
-   function listWordsByCat($cat) {
+   function listWordsInCat($cat) {
       global $db;
       $sql = "SELECT * FROM link_words_cat WHERE cat_link='". $cat ."';";
-      //$sql = "SELECT samtal_link FROM link_words_cat WHERE cat_link='". $cat ."';";
-      
-      // error: thinks $cat is a column, not column entry
-      /* Warning: SQLite3::query():
-       * Unable to prepare statement: 1,
-       * no such column: noun in
-       * ~/.../samtal.php on line 52
-       **/
       $ret = $db->query($sql);
-      echo "<div style='text-transform:uppercase;'>".$cat ."</div>\n";
+      
+      echo "<h3>".$cat."s</h3>\n";
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
          echo $row['samtal_link'] ."<br>\n";
+      }
+   }
+   
+   function listAllWordsByCat() {
+      global $db;
+      $sql_cat = "SELECT * from categories;";
+      $ret_cat = $db->query($sql_cat);
+      
+      while($row_cat = $ret_cat->fetchArray(SQLITE3_ASSOC) ) {
+         $cat = $row_cat['cat'];
+         echo "<h3>". $cat ."s</h3>";
+         
+         $sql = "SELECT * FROM link_words_cat WHERE cat_link='". $cat ."';";
+         $ret = $db->query($sql);
+         
+         while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
+            $samtal = $row['samtal_link'];
+            $sql_eng = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+            $ret_eng = $db->query($sql);
+            
+            echo $samtal .": ";
+            while($row_eng = $ret_eng->fetchArray(SQLITE3_ASSOC) ) {
+               echo "English: ". $row_eng['english'];
+               if ($row_eng['eng_def_2'] != "") {
+                  echo ", ". $row_eng['eng_def_2'] ."<br>";
+               } else {echo "<br>";}
+               echo "<br>";
+            }
+         }
+         echo "<br>";
       }
    }
    
@@ -69,8 +94,11 @@ EOF;*/
    if ($_GET["op"] && $_GET["op"]=="listAllCats"){
       listAllCats();
    }
-   if ($_GET["op"] && $_GET["op"]=="listWordsByCat"){
-      listWordsByCat($_GET["cat"]);
+   if ($_GET["op"] && $_GET["op"]=="listWordsInCat"){
+      listWordsInCat($_GET["cat"]);
+   }
+   if ($_GET["op"] && $_GET["op"]=="listAllWordsByCat"){
+      listAllWordsByCat();
    }
    
    //listAllWords();
