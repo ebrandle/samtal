@@ -54,7 +54,19 @@ EOF;*/
       
       echo "<h3>".$cat."s</h3>\n";
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
-         echo $row['samtal_link'] ."<br>\n";
+         //echo $row['samtal_link'] ."<br>\n";
+         $samtal = $row['samtal_link'];
+         $sql_eng = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+         $ret_eng = $db->query($sql_eng);
+         
+         echo $samtal .": ";
+         while($row_eng = $ret_eng->fetchArray(SQLITE3_ASSOC) ) {               
+            echo $row_eng['english'];
+            if ($row_eng['eng_def_2'] != "") {
+               echo ", ". $row_eng['eng_def_2'];
+            }
+            echo "<br>";
+         }
       }
    }
    
@@ -73,14 +85,14 @@ EOF;*/
          while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
             $samtal = $row['samtal_link'];
             $sql_eng = "SELECT * FROM words WHERE samtal='". $samtal ."';";
-            $ret_eng = $db->query($sql);
+            $ret_eng = $db->query($sql_eng);
             
             echo $samtal .": ";
-            while($row_eng = $ret_eng->fetchArray(SQLITE3_ASSOC) ) {
-               echo "English: ". $row_eng['english'];
+            while($row_eng = $ret_eng->fetchArray(SQLITE3_ASSOC) ) {               
+               echo $row_eng['english'];
                if ($row_eng['eng_def_2'] != "") {
-                  echo ", ". $row_eng['eng_def_2'] ."<br>";
-               } else {echo "<br>";}
+                  echo ", ". $row_eng['eng_def_2'];
+               }
                echo "<br>";
             }
          }
