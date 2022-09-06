@@ -21,20 +21,7 @@
 <body>
 	<div id="actionsSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none; margin-top: 0px;">
 		<button class="w3-bar-item w3-button w3-large" onclick="w3_close();">Close &times;</button>
-		<a href="#" class="w3-bar-item w3-button">Link 1</a>
-		<a href="#" class="w3-bar-item w3-button">Link 2</a>
-		<a href="#" class="w3-bar-item w3-button">Link 3</a>
-	</div>
-	<div id="resultsDiv"></div>
-	<div id="main">
-		<div class="w3-teal">
-			<button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open();">&#9776;</button>
-		</div>
-		<h1>Samtal Interactive Database</h1>
-		<p>SIDb is a PHP webserver with an SQLite database. Samtal is a fantasy conlang created by the author of the Shadow's Flame flashfiction series and this website.</p>
 		<div id="actionsDiv">
-			<h2 style="margin-top: 16px;">Options</h2>
-			
 			<!-- ADD OPTIONS -->
 			<div id="addStuff">
 				<h3>Add something!</h3>
@@ -50,16 +37,25 @@
 			</div>
 			
 			<!-- LIST OPTIONS -->
+			<div class="dropdown">
+				<button class="dropbtn">Dropdown</button>
+				<div class="dropdown-content">
+				  <a href="#">Link 1</a>
+				  <a href="#">Link 2</a>
+				  <a href="#">Link 3</a>
+				</div>
+			</div>
+			
 			<div id="listStuff">
-				<h3>List stuff!</h3>
+				<h3>List...</h3>
+				<button type="button" id="listWordsBtn" class="w3-bar-item w3-button">all words</button>
 				<ul>
-					<li>All <button type="button" id="listWordsBtn">words</button></li>
-					<li>All words sorted by category <button type="button" id="listAllWordsByCatBtn">Search!</button></li>
-					<li>All <button type="button" id="listCatsBtn">categories</button></li>
+					<li>All words sorted by category <button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">Search!</button></li>
+					<li>All <button type="button" id="listCatsBtn" class="w3-bar-item w3-button">categories</button></li>
 					<li>
 						<label for="wordsByCat">All words in category </label>
 						<input type="text" id="wordsByCat" name="wordsByCat">
-						<button type="button" id="listWordsInCatBtn">Search!</button>
+						<button type="button" id="listWordsInCatBtn" class="w3-bar-item w3-button">Search!</button>
 					</li>
 				</ul>
 			</div>
@@ -91,18 +87,35 @@
 				</ul>
 			</div>
 		</div>
+		<!--<h3>List stuff!</h3>
+			<button type="button" id="sidebarListWordsBtn" class="w3-bar-item w3-button">all words</button>
+			<button type="button" id="sidebarListAllWordsByCatBtn" class="w3-bar-item w3-button">all words by category</button>
+			<button type="button" id="sidebarListCatsBtn" class="w3-bar-item w3-button">all categories</button>
+		-->
+		<a href="#" class="w3-bar-item w3-button">Link 2</a>
+		<a href="#" class="w3-bar-item w3-button">Link 3</a>
+	</div>
+	<div id="resultsDiv" style="margin-left: 8px;"></div>
+	<div id="main">
+		<div class="w3-teal">
+			<button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open();">&#9776;</button>
+		</div>
+		<h1>Samtal Interactive Database</h1>
+		<p>SIDb is a PHP webserver with an SQLite database. Samtal is a fantasy conlang created by the author of the Shadow's Flame flashfiction series and this website.</p>
 	</div>
 	<script>
 		/***** SIDEBAR *****/
 		function w3_open() {
 			document.getElementById("main").style.marginLeft = "25%";
+			document.getElementById("main").style.paddingLeft = "16px";
 			document.getElementById("actionsSidebar").style.width = "25%";
 			document.getElementById("actionsSidebar").style.display = "block";
 			document.getElementById("openNav").style.display = 'none';
 		  }
-		  
+		
 		function w3_close() {
 			document.getElementById("main").style.marginLeft = "0%";
+			document.getElementById("main").style.paddingLeft = "0px";
 			document.getElementById("actionsSidebar").style.display = "none";
 			document.getElementById("openNav").style.display = "inline-block";
 		}

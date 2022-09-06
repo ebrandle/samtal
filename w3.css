@@ -2,9 +2,19 @@
 html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
 /* Extract from normalize.css by Nicolas Gallagher and Jonathan Neal git.io/normalize */
 
-.w3-sidebar{height:100%;width:200px;background-color:#fff;position:fixed!important;z-index:1;overflow:auto}
+.w3-sidebar{
+	height:100%;
+	width:200px;
+	background-color: AntiqueWhite;
+	position:fixed!important;
+	z-index:1;
+	overflow:auto;
+	padding:8px;
+	/*margin-right: 80px;*/
+}
 .w3-sidebar.w3-collapse{display:block!important}
 .w3-sidebar.w3-collapse{display:none}
+
 .w3-bar-block .w3-dropdown-click .w3-button{width:100%;text-align:left;padding:8px 16px}
 .w3-bar-block .w3-dropdown-hover .w3-button .w3-main,#main{transition:margin-left .4s}
 .w3-bar-block .w3-bar-item{width:100%;display:block;padding:8px 16px;text-align:left;border:none;white-space:normal;float:none;outline:0}
