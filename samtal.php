@@ -21,6 +21,9 @@ EOF;*/
    //echo "Operation done successfully\n";
 
    
+   /***** LIST STUFF *****/
+   
+   // list all words
    function listAllWords() {
       global $db;
       $sql = "SELECT * from words;";
@@ -36,6 +39,7 @@ EOF;*/
       }
    }
    
+   // list all categories
    function listAllCats() {
       global $db;
       $sql = "SELECT * from categories;";
@@ -47,10 +51,16 @@ EOF;*/
       }
    }
    
+   // list all words in specified category
    function listWordsInCat($cat) {
       global $db;
       $sql = "SELECT * FROM link_words_cat WHERE cat_link='". $cat ."';";
       $ret = $db->query($sql);
+      
+      $verify_cat_sql = "SELECT * FROM categories WHERE cat='". $cat ."';";
+      $verify_cat_ret = $db->query($verify_cat_sql);
+      $verify_cat_val = $verify_cat_ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($verify_cat_val) == False) return;
       
       echo "<h3>".$cat."s</h3>\n";
       while($row = $ret->fetchArray(SQLITE3_ASSOC) ) {
@@ -70,6 +80,7 @@ EOF;*/
       }
    }
    
+   // list all words, sorted by category
    function listAllWordsByCat() {
       global $db;
       $sql_cat = "SELECT * from categories;";
@@ -100,17 +111,122 @@ EOF;*/
       }
    }
    
+   
+   
+   /***** TRANSLATE STUFF *****/
+   
+   // samtal -> english
+   function translateWordFromSamtal($samtal) {
+      global $db;
+      $sql = "SELECT english, eng_def_2 FROM words WHERE samtal='". $samtal ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      
+      if (doesWordExist($vals) == False) return;
+      echo "<h3>".$samtal."</h3>\n";
+      echo $vals['english'];
+      if ($vals['eng_def_2'] != "") {
+         echo ", ". $vals['eng_def_2'];
+      }
+      echo "<br>";
+   }
+   
+   // english -> samtal
+   function translateWordFromEnglish($english) {
+      global $db;
+      $sql = "SELECT * FROM words WHERE english='". $english ."' OR eng_def_2='". $english ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      
+      if (doesWordExist($vals) == False) return;
+      
+      echo "<h3>".$vals['samtal']."</h3>\n";
+      echo $vals['english'];
+      if ($vals['eng_def_2'] != "") {
+         echo ", ". $vals['eng_def_2'];
+      }
+      echo "<br>";
+   }
+   
+   
+   
+   /***** CATEGORIZE STUFF *****/
+   
+   // add word to category
+   function orderWord($samtal,$cat) {
+      global $db;
+      
+      // check samtal
+      $sql = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals) == False) return;
+      
+      // check category
+      $sql = "SELECT * FROM categories WHERE cat='". $cat ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals) == False) return;
+      
+      $vals = [$samtal,$cat];
+      $sql = "INSERT INTO link_words_cat (samtal_link, cat_link) VALUES ('".$samtal."', '".$cat."');";
+      $ret = $db->query($sql);
+      //$vals = $ret->fetchArray(SQLITE3_ASSOC);
+      
+      /*echo "<h3>".$vals['samtal']."</h3>\n";
+      echo $vals['english'];
+      if ($vals['eng_def_2'] != "") {
+         echo ", ". $vals['eng_def_2'];
+      }*/
+      echo "yay<br>";
+   }
+   
+   
+   
+   /***** VALIDATION *****/
+   
+   // basic validator
+   function doesWordExist($vals) {
+      if ($vals == []) {
+         echo "<em>The specified word does not exist. We apologize for the inconvenience.</em><br>";
+         return False;
+      }
+      return True;
+   }
+   
+   
+   
+   /***** FUNCTION CALLS *****/
+   
+   // list words
    if ($_GET["op"] && $_GET["op"]=="listAllWords"){
       listAllWords();
    }
+   // list categories
    if ($_GET["op"] && $_GET["op"]=="listAllCats"){
       listAllCats();
    }
+   // list words in specified category
    if ($_GET["op"] && $_GET["op"]=="listWordsInCat"){
       listWordsInCat($_GET["cat"]);
    }
+   // list words, sorted by category
    if ($_GET["op"] && $_GET["op"]=="listAllWordsByCat"){
       listAllWordsByCat();
+   }
+   
+   // translate samtal to english
+   if ($_GET["op"] && $_GET["op"]=="translateWordFromSamtal"){
+      translateWordFromSamtal($_GET["samtal"]);
+   }
+   // translate english to samtal
+   if ($_GET["op"] && $_GET["op"]=="translateWordFromEnglish"){
+      translateWordFromEnglish($_GET["english"]);
+   }
+   
+   // put a word in a category
+   if ($_GET["op"] && $_GET["op"]=="orderWord"){
+      orderWord($_GET["samtal"],$_GET["cat"]);
    }
    
    //listAllWords();

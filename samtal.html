@@ -19,6 +19,7 @@
 	</script>
 </head>
 <body>
+	<h1>Samtal Interactive Database</h1>
 	<div id="actionsSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none; margin-top: 0px;">
 		<button class="w3-bar-item w3-button w3-large" onclick="w3_close();">Close &times;</button>
 		<div id="actionsDiv">
@@ -31,29 +32,52 @@
 				</ul>
 			</div>
 			
+			
+			
+			
+			
+			
+			
 			<!-- CATEGORIZATION OPTIONS -->
 			<div id="categorizeStuff">
 				<h3>Categorize something!</h3>
+				<ul>
+					<li>
+						<label for="wordToOrder">Word...</label>
+						<input type="text" id="wordToOrder" name="wordToOrder">
+						<label for="catToOrderInto">Category...</label>
+						<input type="text" id="catToOrderInto" name="catToOrderInto">
+						<button type="button" id="orderWordBtn" class="w3-bar-item w3-button">Search!</button>
+					</li>
+				</ul>
 			</div>
+			
+			
+			
+			
+			
+			
 			
 			<!-- LIST OPTIONS -->
-			<div class="dropdown">
+			<!-- <div class="dropdown">
 				<button class="dropbtn">Dropdown</button>
 				<div class="dropdown-content">
-				  <a href="#">Link 1</a>
-				  <a href="#">Link 2</a>
-				  <a href="#">Link 3</a>
+				  <a href="#"><button type="button" id="listWordsBtn" class="w3-bar-item w3-button">words</button></a>
+				  <a href="#"><button type="button" id="listCatsBtn" class="w3-bar-item w3-button">categories</button></a>
+				  <a href="#"><button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">words sorted by category</button></a>
 				</div>
-			</div>
+			</div> -->
 			
 			<div id="listStuff">
-				<h3>List...</h3>
-				<button type="button" id="listWordsBtn" class="w3-bar-item w3-button">all words</button>
+				<h3>List all...</h3>
+				
+				
 				<ul>
-					<li>All words sorted by category <button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">Search!</button></li>
-					<li>All <button type="button" id="listCatsBtn" class="w3-bar-item w3-button">categories</button></li>
+					<li><button type="button" id="listWordsBtn" class="w3-bar-item w3-button">words</button></li>	
+					<li><button type="button" id="listCatsBtn" class="w3-bar-item w3-button">categories</button></li>
+					<li><button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">words sorted by category</button></li>
 					<li>
-						<label for="wordsByCat">All words in category </label>
+						<label for="wordsByCat">words in category...</label>
 						<input type="text" id="wordsByCat" name="wordsByCat">
 						<button type="button" id="listWordsInCatBtn" class="w3-bar-item w3-button">Search!</button>
 					</li>
@@ -62,12 +86,17 @@
 			
 			<!-- TRANSLATE OPTIONS -->
 			<div id="translateStuff">
-				<h3>Translate me!</h3> <!-- text box for word to translate -->
+				<h3>Translate...</h3> <!-- text box for word to translate -->
 				<ul>
 					<li>
-						<label for="translateWordFromSamtal">Translate from Samtal: </label>
-						<input type="text" id="translateWordFromSamtal" name="translateWordFromSamtal">
+						<label for="translateFromSamtal">word from Samtal...</label>
+						<input type="text" id="translateFromSamtal" name="translateFromSamtal">
 						<button type="button" id="translateWordFromSamtalBtn">Search!</button>
+					</li>
+					<li>
+						<label for="translateFromEnglish">word from English...</label>
+						<input type="text" id="translateFromEnglish" name="translateFromEnglish">
+						<button type="button" id="translateWordFromEnglishBtn">Search!</button>
 					</li>
 				</ul>
 			</div>
@@ -100,7 +129,6 @@
 		<div class="w3-teal">
 			<button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open();">&#9776;</button>
 		</div>
-		<h1>Samtal Interactive Database</h1>
 		<p>SIDb is a PHP webserver with an SQLite database. Samtal is a fantasy conlang created by the author of the Shadow's Flame flashfiction series and this website.</p>
 	</div>
 	<script>
@@ -171,6 +199,42 @@
 			ajax.open("GET","samtal.php?op=listWordsInCat&cat="+wordsByCat.value);
 			ajax.send();
 		});
+		
+		/***** TRANSLATE STUFF *****/
+		// translate word from samtal to english
+		translateWordFromSamtalBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=translateWordFromSamtal&samtal="+translateFromSamtal.value);
+			ajax.send();
+		});
+		
+		// translate word from english to samtal
+		translateWordFromEnglishBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=translateWordFromEnglish&english="+translateFromEnglish.value);
+			ajax.send();
+		});
+		
+		/***** CATEGORIZE STUFF *****/
+		// add word to category
+		orderWordBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=orderWord&samtal="+wordToOrder.value+"&cat="+catToOrderInto.value);
+			ajax.send();
+		});
+		
 	</script>
 </body>
 </html>
