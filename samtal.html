@@ -23,6 +23,7 @@
 	<div id="actionsSidebar" class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none; margin-top: 0px;">
 		<button class="w3-bar-item w3-button w3-large" onclick="w3_close();">Close &times;</button>
 		<div id="actionsDiv">
+
 			<!-- ADD OPTIONS -->
 			<div id="addStuff">
 				<h3>Add something!</h3>
@@ -31,33 +32,21 @@
 					<li>Add a <button type="button">part of speech or other category</button></li>
 				</ul>
 			</div>
-			
-			
-			
-			
-			
-			
-			
+
 			<!-- CATEGORIZATION OPTIONS -->
 			<div id="categorizeStuff">
 				<h3>Categorize something!</h3>
 				<ul>
 					<li>
-						<label for="wordToOrder">Word...</label>
-						<input type="text" id="wordToOrder" name="wordToOrder">
-						<label for="catToOrderInto">Category...</label>
+						<label for="wordToOrder">Word: </label>
+						<input type="text" id="wordToOrder" name="wordToOrder"><br>
+						<label for="catToOrderInto">Category: </label>
 						<input type="text" id="catToOrderInto" name="catToOrderInto">
 						<button type="button" id="orderWordBtn" class="w3-bar-item w3-button">Search!</button>
 					</li>
 				</ul>
 			</div>
-			
-			
-			
-			
-			
-			
-			
+
 			<!-- LIST OPTIONS -->
 			<!-- <div class="dropdown">
 				<button class="dropbtn">Dropdown</button>
@@ -67,19 +56,16 @@
 				  <a href="#"><button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">words sorted by category</button></a>
 				</div>
 			</div> -->
-			
 			<div id="listStuff">
 				<h3>List all...</h3>
-				
-				
 				<ul>
 					<li><button type="button" id="listWordsBtn" class="w3-bar-item w3-button">words</button></li>	
 					<li><button type="button" id="listCatsBtn" class="w3-bar-item w3-button">categories</button></li>
 					<li><button type="button" id="listAllWordsByCatBtn" class="w3-bar-item w3-button">words sorted by category</button></li>
 					<li>
-						<label for="wordsByCat">words in category...</label>
+						<label for="wordsByCat">words in category: </label>
 						<input type="text" id="wordsByCat" name="wordsByCat">
-						<button type="button" id="listWordsInCatBtn" class="w3-bar-item w3-button">Search!</button>
+						<button type="button" id="listWordsInCatBtn" class="w3-bar-item w3-button">Go!</button>
 					</li>
 				</ul>
 			</div>
@@ -89,21 +75,38 @@
 				<h3>Translate...</h3> <!-- text box for word to translate -->
 				<ul>
 					<li>
-						<label for="translateFromSamtal">word from Samtal...</label>
+						<label for="translateFromSamtal">from Samtal: </label>
 						<input type="text" id="translateFromSamtal" name="translateFromSamtal">
-						<button type="button" id="translateWordFromSamtalBtn">Search!</button>
+						<button type="button" id="translateWordFromSamtalBtn">Go!</button>
 					</li>
 					<li>
-						<label for="translateFromEnglish">word from English...</label>
+						<label for="translateFromEnglish">from English: </label>
 						<input type="text" id="translateFromEnglish" name="translateFromEnglish">
-						<button type="button" id="translateWordFromEnglishBtn">Search!</button>
+						<button type="button" id="translateWordFromEnglishBtn" class="w3-bar-item w3-button">Go!</button>
 					</li>
 				</ul>
 			</div>
 			
 			<!-- DELETE OPTIONS -->
 			<div id="deleteStuff">
-				<h3>Oops! Delete this typo:</h3> <!-- text box for word/category to delete -->
+				<h3>Oops! Delete this...</h3> <!-- text box for word/category to delete -->
+				<ul>
+					<li>
+						<label for="wordToDelete">word: </label>
+						<input type="text" id="wordToDelete" name="wordToDelete">
+						<button type="button" id="deleteWordBtn" class="w3-bar-item w3-button">Begone, vile typo!</button>
+					</li>
+					<li>
+						<label for="catToDelete">category: </label>
+						<input type="text" id="catToDelete" name="catToDelete">
+						<button type="button" id="deleteCategoryBtn" class="w3-bar-item w3-button">Begone, vile typo!</button>
+					</li>
+					<li>
+						<label for="deleteOrdering">ordering: </label>
+						<input type="text" id="deleteOrdering" name="deleteOrdering">
+						<button type="button" id="deleteOrderingBtn" class="w3-bar-item w3-button">Begone, vile typo!</button>
+					</li>
+				</ul>
 			</div>
 			
 			<!-- EXPORT OPTIONS -->
@@ -121,8 +124,7 @@
 			<button type="button" id="sidebarListAllWordsByCatBtn" class="w3-bar-item w3-button">all words by category</button>
 			<button type="button" id="sidebarListCatsBtn" class="w3-bar-item w3-button">all categories</button>
 		-->
-		<a href="#" class="w3-bar-item w3-button">Link 2</a>
-		<a href="#" class="w3-bar-item w3-button">Link 3</a>
+
 	</div>
 	<div id="resultsDiv" style="margin-left: 8px;"></div>
 	<div id="main">
@@ -232,6 +234,29 @@
 				resultsDiv.innerHTML=this.response;
 			});
 			ajax.open("GET","samtal.php?op=orderWord&samtal="+wordToOrder.value+"&cat="+catToOrderInto.value);
+			ajax.send();
+		});
+
+		/***** DELETE STUFF *****/
+		// delete word
+		deleteWordBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=deleteWord&word="+wordToDelete.value);
+			ajax.send();
+		});
+
+		// delete category
+		deleteCategoryBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=deleteCategory&cat="+catToDelete.value);
 			ajax.send();
 		});
 		

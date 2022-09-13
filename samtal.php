@@ -10,17 +10,6 @@
       echo $db->lastErrorMsg();
    }
    
-   /*else {
-      echo "Opened database successfully\n";
-   }*/
-
-   /*   $sql =<<<EOF
-      SELECT * from words;
-EOF;*/
-   
-   //echo "Operation done successfully\n";
-
-   
    /***** LIST STUFF *****/
    
    // list all words
@@ -171,17 +160,50 @@ EOF;*/
       $vals = [$samtal,$cat];
       $sql = "INSERT INTO link_words_cat (samtal_link, cat_link) VALUES ('".$samtal."', '".$cat."');";
       $ret = $db->query($sql);
-      //$vals = $ret->fetchArray(SQLITE3_ASSOC);
-      
-      /*echo "<h3>".$vals['samtal']."</h3>\n";
-      echo $vals['english'];
-      if ($vals['eng_def_2'] != "") {
-         echo ", ". $vals['eng_def_2'];
-      }*/
+
       echo "yay<br>";
    }
-   
-   
+
+
+
+   /***** DELETE STUFF *****/
+
+   // delete word
+   function deleteWord($samtal) {
+      global $db;
+
+      // check if word exists
+      $sql = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals) == False) return;
+
+      $sql = "DELETE FROM words WHERE samtal='". $samtal ."';";
+      $ret = $db->query($sql);
+      $sql = "DELETE FROM link_words_cat WHERE samtal_link='". $samtal ."';";
+      $ret = $db->query($sql);
+
+      echo "Word deleted<br>";
+   }
+
+   function deleteCategory($cat) {
+      global $db;
+
+      // check if word exists
+      $sql = "SELECT * FROM categories WHERE cat='". $cat ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals) == False) return;
+
+      $sql = "DELETE FROM categories WHERE cat='". $cat ."';";
+      $ret = $db->query($sql);
+      $sql = "DELETE FROM link_words_cat WHERE cat_link='". $cat ."';";
+      $ret = $db->query($sql);
+
+      echo "Category deleted<br>";
+   }
+
+
    
    /***** VALIDATION *****/
    
@@ -227,6 +249,14 @@ EOF;*/
    // put a word in a category
    if ($_GET["op"] && $_GET["op"]=="orderWord"){
       orderWord($_GET["samtal"],$_GET["cat"]);
+   }
+
+   // delete word
+   if ($_GET["op"] && $_GET["op"]=="deleteWord"){
+      deleteWord($_GET["word"]);
+   }
+   if ($_GET["op"] && $_GET["op"]=="deleteCategory"){
+      deleteCategory($_GET["cat"]);
    }
    
    //listAllWords();

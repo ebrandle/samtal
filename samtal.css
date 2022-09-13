@@ -27,6 +27,7 @@ button, select {
 button:hover {background-color: teal; color: whitesmoke; border: 1px solid antiquewhite;}
 
 #actionsDiv {position: sticky; top: 0;}
+/*#actionsSidebar {min-width: 30%; max-width: 50%;}*/
 #resultsDiv {max-width: 50%; min-width: 30%; float: right;}
 
 input {
