@@ -1,6 +1,9 @@
 # Samtal Translation Database
 Start: 2020-05-04
-Finished: 2021-07-20
+
+Python finished: 2021-07-20
+
+PHP start: 2022-Summer
 
 ## Code and Conlang Creator
 E. Brandle
