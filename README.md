@@ -11,4 +11,4 @@ E. Brandle
 - Single word translation
 - Multi-word translation (WIP)
 
-A more detailed description is available at [ebrandle/conlang_translation_db](https://github.com/ebrandle/conlang_translation_db)
+A more detailed description is available at [github.com/ebrandle/conlang_translation_db](https://github.com/ebrandle/conlang_translation_db#readme).
