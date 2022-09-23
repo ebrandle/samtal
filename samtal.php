@@ -9,6 +9,44 @@
    if(!$db) {
       echo $db->lastErrorMsg();
    }
+
+   /***** ADD STUFF *****/
+
+   // add word
+   function addWord($samtal,$eng1,$eng2) {
+      global $db;
+
+      // check if word exists
+      $sql = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordAlreadyExist($vals) == True) return;
+
+      $sql = "INSERT INTO words (samtal, english, eng_def_2) VALUES ('".$samtal."', '".$eng1."', '".$eng2."');";
+      $ret = $db->query($sql);
+
+      echo "Word added<br>";
+
+      orderWord($samtal,"uncategorized");
+   }
+
+   // add category
+   function addCat($cat) {
+      global $db;
+
+      // check if word exists
+      $sql = "SELECT * FROM categories WHERE cat='". $cat ."';";
+      $ret = $db->query($sql);
+      $vals = $ret->fetchArray(SQLITE3_ASSOC);
+      if (doesWordAlreadyExist($vals) == True) return;
+
+      $sql = "INSERT INTO categories (cat) VALUES ('".$cat."');";
+      $ret = $db->query($sql);
+
+      echo "Category added<br>";
+   }
+
+
    
    /***** LIST STUFF *****/
    
@@ -189,7 +227,7 @@
    function deleteCategory($cat) {
       global $db;
 
-      // check if word exists
+      // check if category exists
       $sql = "SELECT * FROM categories WHERE cat='". $cat ."';";
       $ret = $db->query($sql);
       $vals = $ret->fetchArray(SQLITE3_ASSOC);
@@ -201,6 +239,27 @@
       $ret = $db->query($sql);
 
       echo "Category deleted<br>";
+   }
+
+   function deleteOrdering($samtal,$cat) {
+      global $db;
+
+      // check if word exists
+      $sql_word = "SELECT * FROM words WHERE samtal='". $samtal ."';";
+      $ret_word = $db->query($sql_word);
+      $vals_word = $ret_word->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals_word) == False) return;
+
+      // check if category exists
+      $sql_cat = "SELECT * FROM categories WHERE cat='". $cat ."';";
+      $ret_cat = $db->query($sql_cat);
+      $vals_cat = $ret_cat->fetchArray(SQLITE3_ASSOC);
+      if (doesWordExist($vals_cat) == False) return;
+
+      $sql = "DELETE FROM link_words_cat WHERE cat_link='". $cat ."' AND samtal_link='". $samtal ."';";
+      $ret = $db->query($sql);
+
+      echo "Ordering deleted<br>";
    }
 
 
@@ -215,11 +274,30 @@
       }
       return True;
    }
+
+   // basic validator
+   function doesWordAlreadyExist($vals) {
+      if ($vals != []) {
+         echo "<em>The specified word already exists. We apologize for the inconvenience.</em><br>";
+         return True;
+      }
+      return False;
+   }
    
    
    
    /***** FUNCTION CALLS *****/
-   
+
+   // add word
+   if ($_GET["op"] && $_GET["op"]=="addWord"){
+      addWord($_GET["samtal"],$_GET["eng1"],$_GET["eng2"]);
+   }
+   // add cat
+   if ($_GET["op"] && $_GET["op"]=="addCat"){
+      addCat($_GET["cat"]);
+   }
+
+
    // list words
    if ($_GET["op"] && $_GET["op"]=="listAllWords"){
       listAllWords();
@@ -236,7 +314,8 @@
    if ($_GET["op"] && $_GET["op"]=="listAllWordsByCat"){
       listAllWordsByCat();
    }
-   
+
+
    // translate samtal to english
    if ($_GET["op"] && $_GET["op"]=="translateWordFromSamtal"){
       translateWordFromSamtal($_GET["samtal"]);
@@ -245,20 +324,27 @@
    if ($_GET["op"] && $_GET["op"]=="translateWordFromEnglish"){
       translateWordFromEnglish($_GET["english"]);
    }
-   
+
+
    // put a word in a category
    if ($_GET["op"] && $_GET["op"]=="orderWord"){
       orderWord($_GET["samtal"],$_GET["cat"]);
    }
 
+
    // delete word
    if ($_GET["op"] && $_GET["op"]=="deleteWord"){
       deleteWord($_GET["word"]);
    }
+   // delete category
    if ($_GET["op"] && $_GET["op"]=="deleteCategory"){
       deleteCategory($_GET["cat"]);
    }
-   
-   //listAllWords();
+   // delete ordering
+   if ($_GET["op"] && $_GET["op"]=="deleteOrdering"){
+      deleteOrdering($_GET["samtal"],$_GET["cat"]);
+   }
+
+
    $db->close();
 ?>

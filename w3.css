@@ -10,7 +10,7 @@ Much of the original file was removed, and some modifications have been made of 
 	position:fixed!important;
 	z-index:1;
 	overflow:auto;
-	padding:8px;
+	padding:0px;
 	/*margin-right: 80px;*/
 }
 .w3-sidebar.w3-collapse{display:block!important}

@@ -26,10 +26,24 @@
 
 			<!-- ADD OPTIONS -->
 			<div id="addStuff">
-				<h3>Add something!</h3>
+				<h3>Add a...</h3>
 				<ul>
-					<li>Add a <button type="button">word</button></li>
-					<li>Add a <button type="button">part of speech or other category</button></li>
+					<li>word:<br>
+						<label for="wordToAdd">Samtal: </label>
+						<input type="text" id="wordToAdd" name="wordToAdd"><br>
+
+						<label for="engDef1">English def: </label>
+						<input type="text" id="engDef1" name="engDef1"><br>
+
+						<label for="engDef2">Alternate english def (optional): </label>
+						<input type="text" id="engDef2" name="engDef2"><br>
+
+						<button type="button" id="addWordBtn" class="w3-bar-item w3-button">Go!</button>
+					</li>
+					<li>category: <br>
+						<input type="text" id="catToAdd" name="catToAdd"><br>
+						<button type="button" id="addCatBtn" class="w3-bar-item w3-button">Go!</button>
+					</li>
 				</ul>
 			</div>
 
@@ -42,7 +56,7 @@
 						<input type="text" id="wordToOrder" name="wordToOrder"><br>
 						<label for="catToOrderInto">Category: </label>
 						<input type="text" id="catToOrderInto" name="catToOrderInto">
-						<button type="button" id="orderWordBtn" class="w3-bar-item w3-button">Search!</button>
+						<button type="button" id="orderWordBtn" class="w3-bar-item w3-button">Go!</button>
 					</li>
 				</ul>
 			</div>
@@ -101,9 +115,11 @@
 						<input type="text" id="catToDelete" name="catToDelete">
 						<button type="button" id="deleteCategoryBtn" class="w3-bar-item w3-button">Begone, vile typo!</button>
 					</li>
-					<li>
-						<label for="deleteOrdering">ordering: </label>
-						<input type="text" id="deleteOrdering" name="deleteOrdering">
+					<li>ordering:<br>
+						<label for="wordToUnorder">word: </label>
+						<input type="text" id="wordToUnorder" name="wordToUnorder"><br>
+						<label for="catToUnorder">category: </label>
+						<input type="text" id="catToUnorder" name="catToUnorder">
 						<button type="button" id="deleteOrderingBtn" class="w3-bar-item w3-button">Begone, vile typo!</button>
 					</li>
 				</ul>
@@ -156,7 +172,34 @@
 		function resizeInput() {
 			this.style.width = this.value.length + "ch";
 		}*/
-		
+
+		/***** ADD STUFF *****/
+		// add word
+		addWordBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=addWord&samtal="+wordToAdd.value+"&eng1="+engDef1.value+"&eng2="+engDef2.value);
+			ajax.send();
+		});
+
+		// add category
+		addCatBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=addCat&cat="+catToAdd.value);
+			ajax.send();
+		});
+
+
+
+
+
 		/***** LIST STUFF *****/
 		// list words
 		listWordsBtn.addEventListener("click", function() {
@@ -201,7 +244,8 @@
 			ajax.open("GET","samtal.php?op=listWordsInCat&cat="+wordsByCat.value);
 			ajax.send();
 		});
-		
+
+
 		/***** TRANSLATE STUFF *****/
 		// translate word from samtal to english
 		translateWordFromSamtalBtn.addEventListener("click", function() {
@@ -224,7 +268,8 @@
 			ajax.open("GET","samtal.php?op=translateWordFromEnglish&english="+translateFromEnglish.value);
 			ajax.send();
 		});
-		
+
+
 		/***** CATEGORIZE STUFF *****/
 		// add word to category
 		orderWordBtn.addEventListener("click", function() {
@@ -236,6 +281,7 @@
 			ajax.open("GET","samtal.php?op=orderWord&samtal="+wordToOrder.value+"&cat="+catToOrderInto.value);
 			ajax.send();
 		});
+
 
 		/***** DELETE STUFF *****/
 		// delete word
@@ -257,6 +303,17 @@
 				resultsDiv.innerHTML=this.response;
 			});
 			ajax.open("GET","samtal.php?op=deleteCategory&cat="+catToDelete.value);
+			ajax.send();
+		});
+
+		// delete word/category ordering
+		deleteOrderingBtn.addEventListener("click", function() {
+			let ajax = new XMLHttpRequest();
+			ajax.responseType = "text";
+			ajax.addEventListener("load", function() {
+				resultsDiv.innerHTML=this.response;
+			});
+			ajax.open("GET","samtal.php?op=deleteOrdering&samtal="+wordToUnorder.value+"&cat="+catToUnorder.value);
 			ajax.send();
 		});
 		
