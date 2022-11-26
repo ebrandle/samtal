@@ -148,8 +148,9 @@
       $sql = "SELECT english, eng_def_2 FROM words WHERE samtal='". $samtal ."';";
       $ret = $db->query($sql);
       $vals = $ret->fetchArray(SQLITE3_ASSOC);
-      
+
       if (doesWordExist($vals) == False) return;
+
       echo "<h3>".$samtal."</h3>\n";
       echo $vals['english'];
       if ($vals['eng_def_2'] != "") {
@@ -160,11 +161,15 @@
    
    // english -> samtal
    function translateWordFromEnglish($english) {
+      if ($english == "") {
+          echo "<em>The specified word does not exist. We apologize for the inconvenience.</em><br>";
+          return;
+      }
       global $db;
       $sql = "SELECT * FROM words WHERE english='". $english ."' OR eng_def_2='". $english ."';";
       $ret = $db->query($sql);
       $vals = $ret->fetchArray(SQLITE3_ASSOC);
-      
+
       if (doesWordExist($vals) == False) return;
       
       echo "<h3>".$vals['samtal']."</h3>\n";
